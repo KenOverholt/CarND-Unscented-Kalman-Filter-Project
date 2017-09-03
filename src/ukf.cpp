@@ -100,10 +100,11 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       x_(1) = measurement_pack.raw_measurements_(1);
     }
 
-    F_ << 1, 0, 0, 0,  //KRO 1 diagonal matrix
-          0, 1, 0, 0,
-          0, 0, 1, 0,
-          0, 0, 0, 1;
+    //KRO2 don't think this is needed.  Remove for now.
+    //F_ << 1, 0, 0, 0,  //KRO 1 diagonal matrix
+    //      0, 1, 0, 0,
+    //      0, 0, 1, 0,
+    //      0, 0, 0, 1;
     
     previous_timestamp_ = measurement_pack.timestamp_;
     
