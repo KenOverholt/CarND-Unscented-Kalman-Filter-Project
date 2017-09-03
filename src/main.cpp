@@ -136,22 +136,21 @@ int main()
 	
           json msgJson;
           msgJson["estimate_x"] = p_x;
-          msgJson["estimate_y"] = p_y;
+	  msgJson["estimate_y"] = p_y;
           msgJson["rmse_x"] =  RMSE(0);
           msgJson["rmse_y"] =  RMSE(1);
           msgJson["rmse_vx"] = RMSE(2);
           msgJson["rmse_vy"] = RMSE(3);
-		std::cout << "after setting Json valued" << endl;
+//		std::cout << "after setting Json valued" << endl;
           auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
-           std::cout << "Json msg: " << msg << std::endl;
+//           std::cout << "Json msg: " << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-	  std::cout << "after sending json message" << endl;
+//	  std::cout << "after sending json message" << endl;
         }
       } else {
         
         std::string msg = "42[\"manual\",{}]";
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-	      std::cout << "exiting else" << endl;
       }
     }
 
