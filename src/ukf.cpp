@@ -29,10 +29,10 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 30;
+  std_a_ = 30;	//KRO2: will need to modify this
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 30;
+  std_yawdd_ = 30;	//KRO2: will need to modify this
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -123,11 +123,11 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
      * Update the process noise covariance matrix.
      * Use noise_ax = 9 and noise_ay = 9 for the Q matrix.
    */
-
-  /*
-  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt expressed in seconds
-  previous_timestamp_ = measurement_pack.timestamp_;
   
+  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt expressed in seconds
+	
+  /*
+//KRO2: Not sure if any of this is needed. It is from EKF.
   float dt_2 = dt * dt;
   float dt_3 = dt_2 * dt;
   float dt_4 = dt_3 * dt;
@@ -142,9 +142,11 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
 	     0, noise_ay_*(dt_4/4), 0, noise_ay_*(dt_3/2),
              noise_ax_*(dt_3/2), 0, noise_ax_*dt_2, 0,
              0, noise_ay_*(dt_3/2), 0, noise_ay_*dt_2;
-  
-  ekf_.Predict();
-*/
+  */
+	
+  Prediction(dt);
+  previous_timestamp_ = measurement_pack.timestamp_;
+	
   /*****************************************************************************
    *  Update
    ****************************************************************************/
@@ -153,19 +155,25 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
      * Use the sensor type to perform the update step.
      * Update the state and covariance matrices.
    */
-/*
+
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-    // Radar updates
+	  UpdateRadar(measurement_pack);
+   /* KRO2: from EKF. don't think it is needed:
+   // Radar updates
     ekf_.H_ = tools.CalculateJacobian(ekf_.x_); // KRO set to Hj which should be set using the Jacobian function in tools.cpp
     ekf_.R_ = R_radar_;
-    ekf_.UpdateEKF(measurement_pack.raw_measurements_);  //KRO
-  } else {
+    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+    */
+  } else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+    	UpdateLidar(measurement_pack);
+	  /* KRO2: from EKF. don't think it is needed:
     // Laser updates
     ekf_.H_ = H_laser_;
     ekf_.R_ = R_laser_;
-    ekf_.Update(measurement_pack.raw_measurements_);  //KRO
+    ekf_.Update(measurement_pack.raw_measurements_);
+    */
   }
-*/
+
   // print the output
   //cout << "x_ = " << ekf_.x_ << endl;
   //cout << "P_ = " << ekf_.P_ << endl;
