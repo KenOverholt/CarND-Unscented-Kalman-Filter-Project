@@ -59,7 +59,7 @@ UKF::UKF() {
   Tc_ = MatrixXd(n_x_, n_z_);
 
   //create matrix for z, incoming radar measurement
-  z_ = VectorXd(n_z);
+  z_ = VectorXd(n_z_);
   
   /**
   TODO:
