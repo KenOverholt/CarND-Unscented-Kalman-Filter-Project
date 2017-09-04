@@ -49,6 +49,12 @@ UKF::UKF() {
   // Radar measurement noise standard deviation radius change in m/s
   std_radrd_ = 0.3;
 
+  //set measurement dimension, radar can measure r, phi, and r_dot
+  n_z_ = 3;
+  
+  //create matrix for sigma points in measurement space
+  Zsig_ = MatrixXd(n_z_, 2 * n_aug_ + 1);
+
   /**
   TODO:
 
@@ -353,4 +359,55 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 
   You'll also need to calculate the radar NIS.
   */
-}
+
+  ////////////////////////////////////////////////////////////////////
+  // Predict Radar Sigma Points   L7, sect 27
+  ///////////////////////////////////////////////////////////
+	
+    //transform sigma points into measurement space
+  for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
+
+    // extract values for better readibility
+    double p_x = Xsig_pred_(0,i);
+    double p_y = Xsig_pred_(1,i);
+    double v  = Xsig_pred_(2,i);
+    double yaw = Xsig_pred_(3,i);
+
+    double v1 = cos(yaw)*v;
+    double v2 = sin(yaw)*v;
+
+    // measurement model
+    Zsig_(0,i) = sqrt(p_x*p_x + p_y*p_y);                        //r
+    Zsig_(1,i) = atan2(p_y,p_x);                                 //phi
+    Zsig_(2,i) = (p_x*v1 + p_y*v2 ) / sqrt(p_x*p_x + p_y*p_y);   //r_dot
+  }
+
+  //mean predicted measurement
+  VectorXd z_pred = VectorXd(n_z_);
+  z_pred.fill(0.0);
+  for (int i=0; i < 2*n_aug_+1; i++) {
+      z_pred = z_pred + weights_(i) * Zsig.col(i);  //KRO2 reset the weights_ var?
+  }
+
+  //measurement covariance matrix S
+  MatrixXd S = MatrixXd(n_z_,n_z_);
+  S.fill(0.0);
+  for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
+    //residual
+    VectorXd z_diff = Zsig_.col(i) - z_pred;
+
+    //angle normalization
+    while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
+    while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
+
+    S = S + weights_(i) * z_diff * z_diff.transpose();	  
+  }
+
+  //add measurement noise covariance matrix
+  MatrixXd R = MatrixXd(n_z_,n_z_);
+  R <<    std_radr_*std_radr_, 0, 0,
+          0, std_radphi_*std_radphi_, 0,
+          0, 0,std_radrd_*std_radrd_;
+  S = S + R;
+
+} // end void UKF::UpdateRadar(MeasurementPackage meas_package)
