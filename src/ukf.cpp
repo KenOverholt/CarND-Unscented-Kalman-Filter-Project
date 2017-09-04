@@ -386,7 +386,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   VectorXd z_pred = VectorXd(n_z_);
   z_pred.fill(0.0);
   for (int i=0; i < 2*n_aug_+1; i++) {
-      z_pred = z_pred + weights_(i) * Zsig.col(i);  //KRO2 reset the weights_ var?
+      z_pred = z_pred + weights_(i) * Zsig_.col(i);  //KRO2 reset the weights_ var?
   }
 
   //measurement covariance matrix S
