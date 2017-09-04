@@ -76,7 +76,7 @@ public:
   MatrixXd P_aug_;  //KRO2 added
 
   //create sigma point matrix
-  MatrixXd Xsig_aug_  //KRO2 added  
+  MatrixXd Xsig_aug_;  //KRO2 added  
 
 
   /**
