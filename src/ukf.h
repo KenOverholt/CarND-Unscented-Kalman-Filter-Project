@@ -69,6 +69,15 @@ public:
   ///* Sigma point spreading parameter
   double lambda_;
 
+  //create augmented mean vector
+  VectorXd x_aug_;  //KRO2 added
+
+  //create augmented state covariance
+  MatrixXd P_aug_;  //KRO2 added
+
+  //create sigma point matrix
+  MatrixXd Xsig_aug_  //KRO2 added  
+
 
   /**
    * Constructor
