@@ -61,7 +61,7 @@ UKF::UKF() {
   n_aug_ = 7;	//KRO2 added
 
   //define spreading parameter
-  double lambda_ = 3 - n_aug;
+  double lambda_ = 3 - n_aug_;
 
   //create augmented mean vector
   x_aug_ = VectorXd(n_aug_);	//KRO2 added
@@ -218,9 +218,9 @@ void UKF::Prediction(double delta_t) {
 
   //create augmented covariance matrix
   P_aug_.fill(0.0);
-  P_aug_.topLeftCorner(5,5) = P;
-  P_aug_(5,5) = std_a*std_a;
-  P_aug_(6,6) = std_yawdd*std_yawdd;
+  P_aug_.topLeftCorner(5,5) = P_;
+  P_aug_(5,5) = std_a_*std_a_;
+  P_aug_(6,6) = std_yawdd_*std_yawdd_;
 
   //create square root matrix
   MatrixXd L = P_aug_.llt().matrixL();
