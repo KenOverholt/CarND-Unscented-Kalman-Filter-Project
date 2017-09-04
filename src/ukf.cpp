@@ -55,6 +55,12 @@ UKF::UKF() {
   //create matrix for sigma points in measurement space
   Zsig_ = MatrixXd(n_z_, 2 * n_aug_ + 1);
 
+  //create matrix for cross correlation Tc_
+  Tc_ = MatrixXd(n_x_, n_z_);
+
+  //create matrix for z, incoming radar measurement
+  z_ = VectorXd(n_z);
+  
   /**
   TODO:
 
@@ -118,6 +124,10 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       //measurement_pack.raw_measurements_(1) is phi
       x_(0) = measurement_pack.raw_measurements_(0) * cos(measurement_pack.raw_measurements_(1)); 
       x_(1) = measurement_pack.raw_measurements_(0) * sin(measurement_pack.raw_measurements_(1));
+      //set z_ from incoming radar measurement
+      z_ <<  measurement_pack.raw_measurements_(0),
+             measurement_pack.raw_measurements_(1),
+             measurement_pack.raw_measurements_(2);
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
@@ -410,4 +420,41 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
           0, 0,std_radrd_*std_radrd_;
   S = S + R;
 
+  //////////////////////////////////////////////////////////////////////////////
+  // Update Radar  L7, sect 30
+  //////////////////////////////////////////////////////////////////
+
+    //calculate cross correlation matrix
+  Tc_.fill(0.0);
+  for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
+
+    //residual
+    VectorXd z_diff = Zsig_.col(i) - z_pred;
+    //angle normalization
+    while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
+    while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
+
+    // state difference
+    VectorXd x_diff = Xsig_pred_.col(i) - x_;
+    //angle normalization
+    while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
+    while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
+
+    Tc_ = Tc_ + weights_(i) * x_diff * z_diff.transpose();
+  }
+
+  //Kalman gain K;
+  MatrixXd K = Tc_ * S.inverse();
+
+  //residual
+  VectorXd z_diff = z - z_pred;
+
+  //angle normalization
+  while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
+  while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
+
+  //update state mean and covariance matrix
+  x_ = x_ + K * z_diff;
+  P_ = P_ - K*S*K.transpose();
+	
 } // end void UKF::UpdateRadar(MeasurementPackage meas_package)
