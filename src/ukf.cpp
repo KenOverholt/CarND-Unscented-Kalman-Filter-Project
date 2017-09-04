@@ -29,10 +29,10 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 30;	//KRO2: will need to modify this
+  std_a_ = 0.2;	//KRO2: will need to modify this (original value: 30)
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 30;	//KRO2: will need to modify this
+  std_yawdd_ = 0.2;	//KRO2: will need to modify this (original value: 30)
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -56,6 +56,22 @@ UKF::UKF() {
 
   Hint: one or more values initialized above might be wildly off...
   */
+
+  //set augmented dimension
+  n_aug_ = 7;	//KRO2 added
+
+  //define spreading parameter
+  double lambda_ = 3 - n_aug;
+
+  //create augmented mean vector
+  x_aug_ = VectorXd(n_aug_);	//KRO2 added
+
+  //create augmented state covariance
+  P_aug_ = MatrixXd(7, 7);	//KRO2 added
+
+  //create sigma point matrix
+  Xsig_aug_ = MatrixXd(n_aug_, 2 * n_aug_ + 1);	//KRO2 added
+
 }
 
 UKF::~UKF() {}
@@ -77,8 +93,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       * Create the covariance matrix.
     */
     // first measurement
-    x_ = VectorXd(4);
-    x_ << 1, 1, 0, 0;  //KRO important for RMSE; first two will be overwritten but I should play with the last 2
+    x_ << 1, 1, 0, 0, 0;  //KRO important for RMSE; first two will be overwritten but I should play with the last 3
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
@@ -191,6 +206,33 @@ void UKF::Prediction(double delta_t) {
   Complete this function! Estimate the object's location. Modify the state
   vector, x_. Predict sigma points, the state, and the state covariance matrix.
   */
+  
+  ////////////////////////////////////////////////////////////////////////
+  // Create Augmented Signa Points
+  ///////////////////////////////////////////////////////////////////////
+  
+  //create augmented mean state
+  x_aug_.head(5) = x_;
+  x_aug_(5) = 0;
+  x_aug_(6) = 0;
+
+  //create augmented covariance matrix
+  P_aug_.fill(0.0);
+  P_aug_.topLeftCorner(5,5) = P;
+  P_aug_(5,5) = std_a*std_a;
+  P_aug_(6,6) = std_yawdd*std_yawdd;
+
+  //create square root matrix
+  MatrixXd L = P_aug_.llt().matrixL();
+
+  //create augmented sigma points
+  Xsig_aug_.col(0)  = x_aug_;
+  for (int i = 0; i< n_aug_; i++)
+  {
+    Xsig_aug_.col(i+1)       = x_aug_ + sqrt(lambda_+n_aug_) * L.col(i);
+    Xsig_aug_.col(i+1+n_aug_) = x_aug_ - sqrt(lambda_+n_aug_) * L.col(i);
+  }
+
 }
 
 /**
