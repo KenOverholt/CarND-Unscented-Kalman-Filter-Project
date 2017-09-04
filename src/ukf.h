@@ -78,6 +78,12 @@ public:
   //create sigma point matrix
   MatrixXd Xsig_aug_;  //KRO2 added
   
+  //measurement dimension, radar can measure r, phi, and r_dot
+  int n_z_;  //KRO2 added
+  
+  //create matrix for sigma points in measurement space
+  MatrixXd Zsig_;  //KRO2 added
+
   /**
    * Constructor
    */
