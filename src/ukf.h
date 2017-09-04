@@ -78,7 +78,9 @@ public:
   //create sigma point matrix
   MatrixXd Xsig_aug_;  //KRO2 added  
 
-
+  //create vector for weights
+  VectorXd weights;
+  
   /**
    * Constructor
    */
