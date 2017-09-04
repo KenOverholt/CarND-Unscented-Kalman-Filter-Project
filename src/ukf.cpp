@@ -79,7 +79,7 @@ UKF::UKF() {
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);  //KRO2 added
   
   //create vector for weights
-  weights = VectorXd(2*n_aug+1);  //KRO2 added
+  weights_ = VectorXd(2*n_aug_+1);  //KRO2 added
   
 }
 
