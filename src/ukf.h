@@ -69,20 +69,26 @@ public:
   ///* Sigma point spreading parameter
   double lambda_;
 
-  //create augmented mean vector
+  //declare augmented mean vector
   VectorXd x_aug_;  //KRO2 added
 
-  //create augmented state covariance
+  //declare augmented state covariance
   MatrixXd P_aug_;  //KRO2 added
 
-  //create sigma point matrix
+  //declare sigma point matrix
   MatrixXd Xsig_aug_;  //KRO2 added
   
-  //measurement dimension, radar can measure r, phi, and r_dot
+  //declare measurement dimension, radar can measure r, phi, and r_dot
   int n_z_;  //KRO2 added
   
-  //create matrix for sigma points in measurement space
+  //declare matrix for sigma points in measurement space
   MatrixXd Zsig_;  //KRO2 added
+
+  //matrix for cross correlation Tc_
+  MatrixXd Tc_;  //KRO2 added
+
+  //declare vector for z, incoming radar measurement
+  VectorXd z;  //KRO2 added
 
   /**
    * Constructor
