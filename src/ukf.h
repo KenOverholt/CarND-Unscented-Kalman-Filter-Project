@@ -88,7 +88,7 @@ public:
   MatrixXd Tc_;  //KRO2 added
 
   //declare vector for z, incoming radar measurement
-  VectorXd z_;  //KRO2 added
+  //KRO2 remove z_ for debugging   VectorXd z_;  //KRO2 added
 
   /**
    * Constructor
