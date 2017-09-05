@@ -59,7 +59,7 @@ UKF::UKF() {
   Tc_ = MatrixXd(n_x_, n_z_);
 
   //create matrix for z, incoming radar measurement
-  z_ = VectorXd(n_z_);
+  //z_ = VectorXd(n_z_);
   
   /**
   TODO:
@@ -447,7 +447,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   MatrixXd K = Tc_ * S.inverse();
 
   //residual
-  VectorXd z_diff = z_ - z_pred;
+//KRO2 temp comment out  VectorXd z_diff = z_ - z_pred;
+VectorXd z_diff = z_pred;
 
   //angle normalization
   while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
