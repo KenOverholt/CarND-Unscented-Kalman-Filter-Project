@@ -125,9 +125,10 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       x_(0) = measurement_pack.raw_measurements_(0) * cos(measurement_pack.raw_measurements_(1)); 
       x_(1) = measurement_pack.raw_measurements_(0) * sin(measurement_pack.raw_measurements_(1));
       //set z_ from incoming radar measurement
-      z_ <<  measurement_pack.raw_measurements_(0),
-             measurement_pack.raw_measurements_(1),
-             measurement_pack.raw_measurements_(2);
+      //KRO2 temporarily remove
+	//      z_ <<  measurement_pack.raw_measurements_(0),
+          //   measurement_pack.raw_measurements_(1),
+            // measurement_pack.raw_measurements_(2);
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
