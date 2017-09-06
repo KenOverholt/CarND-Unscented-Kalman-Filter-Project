@@ -52,6 +52,9 @@ UKF::UKF() {
   //set measurement dimension, radar can measure r, phi, and r_dot
   n_z_ = 3;
   
+  //set augmented dimension
+  n_aug_ = 7;	//KRO2 added
+
   //create matrix for sigma points in measurement space
   Zsig_ = MatrixXd(n_z_, 2 * n_aug_ + 1);
 
@@ -68,9 +71,6 @@ UKF::UKF() {
 
   Hint: one or more values initialized above might be wildly off...
   */
-
-  //set augmented dimension
-  n_aug_ = 7;	//KRO2 added
 
   //define spreading parameter
   double lambda_ = 3 - n_aug_;
