@@ -375,18 +375,23 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   // Predict Radar Sigma Points   L7, sect 27
   ///////////////////////////////////////////////////////////
 	
+cout << " n_aug_: " << n_aug_ << endl;
+cout << "Xsig_pred_: " << Xsig_pred_ << endl;
+cout << "Zsig_: " << Zsig_ << endl;
+	
     //transform sigma points into measurement space
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
-
+    cout << "i: " << i << endl;
     // extract values for better readibility
     double p_x = Xsig_pred_(0,i);
     double p_y = Xsig_pred_(1,i);
     double v  = Xsig_pred_(2,i);
     double yaw = Xsig_pred_(3,i);
-
+	  
     double v1 = cos(yaw)*v;
     double v2 = sin(yaw)*v;
-
+	cout << "after Xsig_prod" << endl;
+	  
     // measurement model
     Zsig_(0,i) = sqrt(p_x*p_x + p_y*p_y);                        //r
     Zsig_(1,i) = atan2(p_y,p_x);                                 //phi
