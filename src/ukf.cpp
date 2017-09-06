@@ -374,7 +374,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   ////////////////////////////////////////////////////////////////////
   // Predict Radar Sigma Points   L7, sect 27
   ///////////////////////////////////////////////////////////
-/*	
+	
     //transform sigma points into measurement space
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
 
@@ -392,7 +392,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     Zsig_(1,i) = atan2(p_y,p_x);                                 //phi
     Zsig_(2,i) = (p_x*v1 + p_y*v2 ) / sqrt(p_x*p_x + p_y*p_y);   //r_dot
   }
-
+/*
   //mean predicted measurement
   VectorXd z_pred = VectorXd(n_z_);
   z_pred.fill(0.0);
