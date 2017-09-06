@@ -418,14 +418,14 @@ cout << "Zsig_: " << Zsig_ << endl;
 
     S = S + weights_(i) * z_diff * z_diff.transpose();	  
   }
-/*
+
   //add measurement noise covariance matrix
   MatrixXd R = MatrixXd(n_z_,n_z_);
   R <<    std_radr_*std_radr_, 0, 0,
           0, std_radphi_*std_radphi_, 0,
           0, 0,std_radrd_*std_radrd_;
   S = S + R;
-
+/*
   //////////////////////////////////////////////////////////////////////////////
   // Update Radar  L7, sect 30
   //////////////////////////////////////////////////////////////////
