@@ -424,7 +424,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   //////////////////////////////////////////////////////////////////////////////
   // Update Radar  L7, sect 30
   //////////////////////////////////////////////////////////////////
-
+/*
     //calculate cross correlation matrix
   Tc_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
@@ -458,5 +458,5 @@ VectorXd z_diff = z_pred;
   //update state mean and covariance matrix
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S*K.transpose();
-	
+*/	
 } // end void UKF::UpdateRadar(MeasurementPackage meas_package)
