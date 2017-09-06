@@ -67,7 +67,7 @@ int main()
     	  iss >> sensor_type;
 
     	  if (sensor_type.compare("L") == 0) {
-		  std::cout << "storing LADAR measurement" << endl;
+		  std::cout << "storing LIDAR measurement" << endl;
       	  		meas_package.sensor_type_ = MeasurementPackage::LASER;
           		meas_package.raw_measurements_ = VectorXd(2);
           		float px;
