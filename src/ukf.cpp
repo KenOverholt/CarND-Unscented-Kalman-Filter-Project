@@ -374,7 +374,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   ////////////////////////////////////////////////////////////////////
   // Predict Radar Sigma Points   L7, sect 27
   ///////////////////////////////////////////////////////////
-	
+/*	
     //transform sigma points into measurement space
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
 
@@ -420,7 +420,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
           0, std_radphi_*std_radphi_, 0,
           0, 0,std_radrd_*std_radrd_;
   S = S + R;
-
+*/
   //////////////////////////////////////////////////////////////////////////////
   // Update Radar  L7, sect 30
   //////////////////////////////////////////////////////////////////
