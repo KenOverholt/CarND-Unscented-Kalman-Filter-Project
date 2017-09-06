@@ -404,7 +404,7 @@ cout << "Zsig_: " << Zsig_ << endl;
   for (int i=0; i < 2*n_aug_+1; i++) {
       z_pred = z_pred + weights_(i) * Zsig_.col(i);  //KRO2 reset the weights_ var?
   }
-/*
+
   //measurement covariance matrix S
   MatrixXd S = MatrixXd(n_z_,n_z_);
   S.fill(0.0);
@@ -418,7 +418,7 @@ cout << "Zsig_: " << Zsig_ << endl;
 
     S = S + weights_(i) * z_diff * z_diff.transpose();	  
   }
-
+/*
   //add measurement noise covariance matrix
   MatrixXd R = MatrixXd(n_z_,n_z_);
   R <<    std_radr_*std_radr_, 0, 0,
