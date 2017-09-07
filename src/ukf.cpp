@@ -425,7 +425,7 @@ cout << "Zsig_: " << Zsig_ << endl;
           0, std_radphi_*std_radphi_, 0,
           0, 0,std_radrd_*std_radrd_;
   S = S + R;
-/*
+
   //////////////////////////////////////////////////////////////////////////////
   // Update Radar  L7, sect 30
   //////////////////////////////////////////////////////////////////
@@ -448,7 +448,7 @@ cout << "Zsig_: " << Zsig_ << endl;
 
     Tc_ = Tc_ + weights_(i) * x_diff * z_diff.transpose();
   }
-
+/*
   //Kalman gain K;
   MatrixXd K = Tc_ * S.inverse();
 
