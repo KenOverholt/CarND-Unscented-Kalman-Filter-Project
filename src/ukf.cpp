@@ -453,7 +453,7 @@ cout << "weights_.size(): " << weights_.size() << endl;
 	  
     Tc_ = Tc_ + weights_(i) * x_diff * z_diff.transpose();
   }
-/*
+
   //Kalman gain K;
   MatrixXd K = Tc_ * S.inverse();
 
@@ -468,5 +468,5 @@ VectorXd z_diff = z_pred;
   //update state mean and covariance matrix
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S*K.transpose();
-*/
+
 } // end void UKF::UpdateRadar(MeasurementPackage meas_package)
