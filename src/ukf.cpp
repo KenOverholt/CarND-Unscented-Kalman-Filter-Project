@@ -381,7 +381,6 @@ cout << "Zsig_: " << Zsig_ << endl;
 	
     //transform sigma points into measurement space
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
-    cout << "i: " << i << endl;
     // extract values for better readibility
     double p_x = Xsig_pred_(0,i);
     double p_y = Xsig_pred_(1,i);
@@ -390,7 +389,6 @@ cout << "Zsig_: " << Zsig_ << endl;
 	  
     double v1 = cos(yaw)*v;
     double v2 = sin(yaw)*v;
-	cout << "after Xsig_prod" << endl;
 	  
     // measurement model
     Zsig_(0,i) = sqrt(p_x*p_x + p_y*p_y);                        //r
@@ -431,21 +429,27 @@ cout << "Zsig_: " << Zsig_ << endl;
   //////////////////////////////////////////////////////////////////
 
     //calculate cross correlation matrix
+cout << "z_pred.size() " z_prod.size() << endl;
+cout << "Tc_.size(): " << Tc_.size() << endl;
   Tc_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
+    cout << "i: " << i << endl;
 
     //residual
     VectorXd z_diff = Zsig_.col(i) - z_pred;
+    cout << "z_diff.size(): " << z_diff.size() << endl;
+	  
     //angle normalization
     while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
     while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
 
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
-    //angle normalization
+   cout << "x_diff.size(): " << x_diff.size() << endl; 
+   //angle normalization
     while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
-
+cout << "weights_.size(): " << weights_.size() << endl;
     Tc_ = Tc_ + weights_(i) * x_diff * z_diff.transpose();
   }
 /*
