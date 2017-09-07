@@ -429,7 +429,7 @@ cout << "Zsig_: " << Zsig_ << endl;
   //////////////////////////////////////////////////////////////////
 
     //calculate cross correlation matrix
-cout << "z_pred.size() " z_prod.size() << endl;
+cout << "z_pred.size() " << z_prod.size() << endl;
 cout << "Tc_.size(): " << Tc_.size() << endl;
   Tc_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
