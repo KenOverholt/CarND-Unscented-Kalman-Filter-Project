@@ -375,9 +375,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   // Predict Radar Sigma Points   L7, sect 27
   ///////////////////////////////////////////////////////////
 	
-cout << " n_aug_: " << n_aug_ << endl;
+//cout << " n_aug_: " << n_aug_ << endl;
 //cout << "Xsig_pred_: " << Xsig_pred_ << endl;
-cout << "Zsig_: " << Zsig_ << endl;
+//cout << "Zsig_: " << Zsig_ << endl;
 	
     //transform sigma points into measurement space
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
@@ -429,15 +429,15 @@ cout << "Zsig_: " << Zsig_ << endl;
   //////////////////////////////////////////////////////////////////
 
     //calculate cross correlation matrix
-cout << "z_pred.size() " << z_pred.size() << endl;
-cout << "Tc_.size(): " << Tc_.size() << endl;
+//cout << "z_pred.size() " << z_pred.size() << endl;
+//cout << "Tc_.size(): " << Tc_.size() << endl;
   Tc_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
-    cout << "i: " << i << endl;
+//    cout << "i: " << i << endl;
 
     //residual
     VectorXd z_diff = Zsig_.col(i) - z_pred;
-    cout << "z_diff.size(): " << z_diff.size() << endl;
+//   cout << "z_diff.size(): " << z_diff.size() << endl;
 	  
     //angle normalization
     while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
@@ -445,11 +445,11 @@ cout << "Tc_.size(): " << Tc_.size() << endl;
 
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
-   cout << "x_diff.size(): " << x_diff.size() << endl; 
+//   cout << "x_diff.size(): " << x_diff.size() << endl; 
    //angle normalization
     while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
-cout << "weights_.size(): " << weights_.size() << endl;
+//cout << "weights_.size(): " << weights_.size() << endl;
 	  
     Tc_ = Tc_ + weights_(i) * x_diff * z_diff.transpose();
   }
