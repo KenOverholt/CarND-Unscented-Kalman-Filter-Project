@@ -22,8 +22,11 @@ UKF::UKF() {
   // if this is false, radar measurements will be ignored (except during init)
   use_radar_ = false;
 
+  //set n_x_
+  n_x_ = 5;  //KRO2 added
+  
   // initial state vector
-  x_ = VectorXd(5);  //KRO2 this works but should use n_x_, the state dimension
+  x_ = VectorXd(n_x_);
 
   // initial covariance matrix
   P_ = MatrixXd(5, 5);  //KRO2 this works but should use n_x_, the state dimension
@@ -84,9 +87,6 @@ UKF::UKF() {
   //create sigma point matrix
   Xsig_aug_ = MatrixXd(n_aug_, 2 * n_aug_ + 1);	//KRO2 added
 
-  //set n_x_
-  n_x_ = 5;  //KRO2 added
-  
   //create matrix with predicted sigma points as columns
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);  //KRO2 added
   
@@ -376,7 +376,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   ///////////////////////////////////////////////////////////
 	
 cout << " n_aug_: " << n_aug_ << endl;
-cout << "Xsig_pred_: " << Xsig_pred_ << endl;
+//cout << "Xsig_pred_: " << Xsig_pred_ << endl;
 cout << "Zsig_: " << Zsig_ << endl;
 	
     //transform sigma points into measurement space
@@ -450,6 +450,7 @@ cout << "Tc_.size(): " << Tc_.size() << endl;
     while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
 cout << "weights_.size(): " << weights_.size() << endl;
+	  
     Tc_ = Tc_ + weights_(i) * x_diff * z_diff.transpose();
   }
 /*
