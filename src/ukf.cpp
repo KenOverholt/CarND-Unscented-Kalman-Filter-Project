@@ -327,7 +327,7 @@ void UKF::Prediction(double delta_t) {
   }
 
   //predicted state covariance matrix
-  P_.fill(0.0);
+  //P_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
 
     // state difference
