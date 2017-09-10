@@ -65,7 +65,7 @@ UKF::UKF() {
   Tc_ = MatrixXd(n_x_, n_z_);
 
   //create matrix for z, incoming radar measurement
-  //z_ = VectorXd(n_z_);
+  z_ = VectorXd(n_z_);
   
   /**
   TODO:
@@ -126,9 +126,9 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       x_(1) = measurement_pack.raw_measurements_(0) * sin(measurement_pack.raw_measurements_(1));
       //set z_ from incoming radar measurement
       //KRO2 temporarily remove
-	//      z_ <<  measurement_pack.raw_measurements_(0),
-          //   measurement_pack.raw_measurements_(1),
-            // measurement_pack.raw_measurements_(2);
+      z_ << measurement_pack.raw_measurements_(0),
+            measurement_pack.raw_measurements_(1),
+            measurement_pack.raw_measurements_(2);
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
@@ -458,9 +458,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   MatrixXd K = Tc_ * S.inverse();
 
   //residual
-//KRO2 temp comment out
 VectorXd z_diff = z_ - z_pred;
-//VectorXd z_diff = z_pred;
 
   //angle normalization
   while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
