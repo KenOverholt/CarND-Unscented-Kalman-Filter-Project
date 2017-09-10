@@ -458,8 +458,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   MatrixXd K = Tc_ * S.inverse();
 
   //residual
-//KRO2 temp comment out  VectorXd z_diff = z_ - z_pred;
-VectorXd z_diff = z_pred;
+//KRO2 temp comment out
+VectorXd z_diff = z_ - z_pred;
+//VectorXd z_diff = z_pred;
 
   //angle normalization
   while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
