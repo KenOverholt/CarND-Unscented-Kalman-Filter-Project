@@ -37,7 +37,8 @@ UKF::UKF() {
   // Process noise standard deviation yaw acceleration in rad/s^2
   std_yawdd_ = 0.2;	//KRO2: will need to modify this (original value: 30)
 
-  // Laser measurement noise standard deviation position1 in m
+  // Laser 
+	noise standard deviation position1 in m
   std_laspx_ = 0.15;
 
   // Laser measurement noise standard deviation position2 in m
