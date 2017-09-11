@@ -369,9 +369,9 @@ void UKF::UpdateLidar(MeasurementPackage measurement_pack) {
     // Laser updates
 	
   //L5s7
-  VectorXd y = z - H_ * x_;
-  MatrixXd Ht = H_.transpose();
-  MatrixXd S = H_ * P_ * Ht + R_;
+  VectorXd y = z - H_Laser_ * x_;
+  MatrixXd Ht = H_Laser_.transpose();
+  MatrixXd S = H_Laser_ * P_ * Ht + R_Laser_;
   MatrixXd Si = S.inverse();
   MatrixXd K =  P_ * Ht * Si;
 
