@@ -114,7 +114,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       * Create the covariance matrix.
     */
     // first measurement
-    x_ << 1, 1, 0, 0, 0;  //KRO important for RMSE; first two will be overwritten but I should play with the last 3
+    x_ << 1, 1, 1, 1, 1;  //KRO important for RMSE; first two will be overwritten but I should play with the last 3
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
