@@ -66,7 +66,7 @@ UKF::UKF() {
 
   //create matrix for z, incoming radar measurement
   z_ = VectorXd(n_z_);
-  
+
   /**
   TODO:
 
@@ -93,6 +93,15 @@ UKF::UKF() {
   //create vector for weights
   weights_ = VectorXd(2*n_aug_+1);  //KRO2 added
   
+  //create vectors for Laser Update
+  H_Laser_ = MatrixXd(2,5);  //KRO2 added
+  R_Laser_ = MatrixXd(2,2);  //KRO2 added
+  
+  H_Laser_ << 1,0,0,0,0,
+	      0,1,0,0,0;
+  R_Laser_ << std_laspx_*std_laspx_, 0,
+	      0, std_laspy_*std_laspy_;
+	
 }
 
 UKF::~UKF() {}
@@ -355,11 +364,9 @@ void UKF::UpdateLidar(MeasurementPackage measurement_pack) {
   You'll also need to calculate the lidar NIS.
   */
     VectorXd z = VectorXd(2);
-    z(0) = measurement_pack(0);
-    z(1) = measurement_pack(1);
+    z(0) = measurement_pack.raw_measurements_(0);
+    z(1) = measurement_pack.raw_measurements_(1);
     // Laser updates
-    H_ = H_laser_;
-    R_ = R_laser_;
 	
   //L5s7
   VectorXd y = z - H_ * x_;
