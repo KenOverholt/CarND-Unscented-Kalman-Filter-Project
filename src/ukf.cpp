@@ -125,7 +125,6 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       x_(0) = measurement_pack.raw_measurements_(0) * cos(measurement_pack.raw_measurements_(1)); 
       x_(1) = measurement_pack.raw_measurements_(0) * sin(measurement_pack.raw_measurements_(1));
       //set z_ from incoming radar measurement
-      //KRO2 temporarily remove
       z_ << measurement_pack.raw_measurements_(0),
             measurement_pack.raw_measurements_(1),
             measurement_pack.raw_measurements_(2);
@@ -389,7 +388,13 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  
     double v1 = cos(yaw)*v;
     double v2 = sin(yaw)*v;
-	  
+
+    if ( fabs(p_x) < 0.0001 and	fabs(p_y) < 0.0001 )
+    {
+      p_x = 0.0001;
+      p_y = 0.0001;
+    }
+    
     // measurement model
     Zsig_(0,i) = sqrt(p_x*p_x + p_y*p_y);                        //r
     Zsig_(1,i) = atan2(p_y,p_x);                                 //phi
