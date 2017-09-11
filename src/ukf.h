@@ -90,6 +90,9 @@ public:
   //declare vector for z, incoming radar measurement
   VectorXd z_;  //KRO2 added
 
+  MatrixXd H_laser;  //KRO2 added
+  MatrixXd R_laser;  //KRO2 added
+  
   /**
    * Constructor
    */
