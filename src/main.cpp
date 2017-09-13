@@ -67,7 +67,7 @@ int main()
     	  iss >> sensor_type;
 
     	  if (sensor_type.compare("L") == 0) {
-		  std::cout << "storing LIDAR measurement" << endl;
+//		  std::cout << "storing LIDAR measurement" << endl;
       	  		meas_package.sensor_type_ = MeasurementPackage::LASER;
           		meas_package.raw_measurements_ = VectorXd(2);
           		float px;
@@ -78,7 +78,7 @@ int main()
           		iss >> timestamp;
           		meas_package.timestamp_ = timestamp;
           } else if (sensor_type.compare("R") == 0) {
-		  std::cout << "storing RADAR measurement" << endl;
+//		  std::cout << "storing RADAR measurement" << endl;
       	  		meas_package.sensor_type_ = MeasurementPackage::RADAR;
           		meas_package.raw_measurements_ = VectorXd(3);
           		float ro;
@@ -129,10 +129,10 @@ int main()
     	  
     	  estimations.push_back(estimate);
 
-	  std::cout << "CalcualteRMSE" << endl;
+//	  std::cout << "CalcualteRMSE" << endl;
 	
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
-	std::cout << "After CalculateRMSE" << endl;
+//	std::cout << "After CalculateRMSE" << endl;
 	
           json msgJson;
           msgJson["estimate_x"] = p_x;
