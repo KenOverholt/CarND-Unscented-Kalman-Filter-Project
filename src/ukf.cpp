@@ -179,7 +179,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   {
     if (use_radar_ == true)
     {
-      cout << measurement_pack.sensor_type_ << endl;
+      cout << "Using radar, " << measurement_pack.sensor_type_ << endl;
       UpdateRadar(measurement_pack);
     }
   }
@@ -187,7 +187,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   {
     if (use_laser_ == true)
     {
-      cout << measurement_pack.sensor_type_ << endl;
+      cout << "Using lidar, " << measurement_pack.sensor_type_ << endl;
       UpdateLidar(measurement_pack);
     }
   }
