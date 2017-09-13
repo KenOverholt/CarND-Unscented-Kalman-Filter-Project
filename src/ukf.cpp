@@ -20,7 +20,7 @@ UKF::UKF() {
   use_laser_ = true;
 
   // if this is false, radar measurements will be ignored (except during init)
-  use_radar_ = false;
+  use_radar_ = true;
 
   //set n_x_
   n_x_ = 5;  //KRO2 added
