@@ -205,7 +205,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
      * Update the state and covariance matrices.
    */
 
-  if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+  if (use_radar == true and measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
 	  UpdateRadar(measurement_pack);
    /* KRO2: from EKF. don't think it is needed:
    // Radar updates
@@ -213,7 +213,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
     ekf_.R_ = R_radar_;
     ekf_.UpdateEKF(measurement_pack.raw_measurements_);
     */
-  } else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+  } else if (use_laser == true and measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
     	UpdateLidar(measurement_pack);
 	  /* KRO2: from EKF. don't think it is needed:
     // Laser updates
@@ -221,7 +221,9 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
     ekf_.R_ = R_laser_;
     ekf_.Update(measurement_pack.raw_measurements_);
     */
-  }
+  } else
+	  cout << "ERROR: Invalid measurement type found" << endl;
+	
 
   // print the output
   //cout << "x_ = " << ekf_.x_ << endl;
