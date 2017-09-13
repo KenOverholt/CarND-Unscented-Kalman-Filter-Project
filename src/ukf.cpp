@@ -175,13 +175,23 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
      * Update the state and covariance matrices.
    */
 
-  if (use_radar_ == true and measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-	cout << measurement_pack.sensor_type_ << endl;
-        UpdateRadar(measurement_pack);
-  } else if (use_laser_ == true and measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
-	cout << measurement_pack.sensor_type_ << endl;
-    	UpdateLidar(measurement_pack);
-  } else {
+  if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR)
+  {
+    if (use_radar_ == true)
+    {
+      cout << measurement_pack.sensor_type_ << endl;
+      UpdateRadar(measurement_pack);
+    }
+  }
+  else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER)
+  {
+    if (use_laser_ == true)
+    {
+      cout << measurement_pack.sensor_type_ << endl;
+      UpdateLidar(measurement_pack);
+    }
+  }
+  else {
 	cout << "ERROR: Invalid measurement type found" << endl;
 	cout << measurement_pack.sensor_type_ << endl;
   }
