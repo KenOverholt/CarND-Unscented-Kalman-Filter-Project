@@ -67,14 +67,6 @@ UKF::UKF() {
   //create matrix for z, incoming radar measurement
   z_ = VectorXd(n_z_);
 
-  /**
-  TODO:
-
-  Complete the initialization. See ukf.h for other member properties.
-
-  Hint: one or more values initialized above might be wildly off...
-  */
-
   //define spreading parameter
   double lambda_ = 3 - n_aug_;
 
@@ -95,10 +87,12 @@ UKF::UKF() {
   
   //create vectors for Laser Update
   H_Laser_ = MatrixXd(2,5);  //KRO2 added
+	
   R_Laser_ = MatrixXd(2,2);  //KRO2 added
   
   H_Laser_ << 1,0,0,0,0,
 	      0,1,0,0,0;
+	
   R_Laser_ << std_laspx_*std_laspx_, 0,
 	      0, std_laspy_*std_laspy_;
 	
@@ -123,7 +117,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       * Create the covariance matrix.
     */
     // first measurement
-    x_ << 1, 1, .5, .5, .5;  //KRO important for RMSE; first two will be overwritten but I should play with the last 3
+    x_ << 1, 1, .25, .25, .25;  //KRO important for RMSE; first two will be overwritten but I should play with the last 3
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
@@ -148,12 +142,6 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       x_(0) = measurement_pack.raw_measurements_(0);
       x_(1) = measurement_pack.raw_measurements_(1);
     }
-
-    //KRO2 don't think this is needed.  Remove for now.
-    //F_ << 1, 0, 0, 0,  //KRO 1 diagonal matrix
-    //      0, 1, 0, 0,
-    //      0, 0, 1, 0,
-    //      0, 0, 0, 1;
     
     previous_timestamp_ = measurement_pack.timestamp_;
     
@@ -175,24 +163,6 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   
   float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt expressed in seconds
 	
-  /*
-//KRO2: Not sure if any of this is needed. It is from EKF.
-  float dt_2 = dt * dt;
-  float dt_3 = dt_2 * dt;
-  float dt_4 = dt_3 * dt;
-  
-  //Modify the F matrix so that the time is integrated  L5, S8
-  ekf_.F_(0, 2) = dt;
-  ekf_.F_(1, 3) = dt;
-  
-  // set the process covariance matrix Q as in L5, s9
-  ekf_.Q_ = MatrixXd(4, 4);
-  ekf_.Q_ << noise_ax_*(dt_4/4), 0, noise_ax_*(dt_3/2), 0,
-	     0, noise_ay_*(dt_4/4), 0, noise_ay_*(dt_3/2),
-             noise_ax_*(dt_3/2), 0, noise_ax_*dt_2, 0,
-             0, noise_ay_*(dt_3/2), 0, noise_ay_*dt_2;
-  */
-	
   Prediction(dt);
   previous_timestamp_ = measurement_pack.timestamp_;
 	
@@ -206,26 +176,15 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
    */
 
   if (use_radar_ == true and measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-	  UpdateRadar(measurement_pack);
-   /* KRO2: from EKF. don't think it is needed:
-   // Radar updates
-    ekf_.H_ = tools.CalculateJacobian(ekf_.x_); // KRO set to Hj which should be set using the Jacobian function in tools.cpp
-    ekf_.R_ = R_radar_;
-    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
-    */
+	cout << measurement_pack.sensor_type_ << endl;
+        UpdateRadar(measurement_pack);
   } else if (use_laser_ == true and measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+	cout << measurement_pack.sensor_type_ << endl;
     	UpdateLidar(measurement_pack);
-	  /* KRO2: from EKF. don't think it is needed:
-    // Laser updates
-    ekf_.H_ = H_laser_;
-    ekf_.R_ = R_laser_;
-    ekf_.Update(measurement_pack.raw_measurements_);
-    */
   } else {
 	cout << "ERROR: Invalid measurement type found" << endl;
 	cout << measurement_pack.sensor_type_ << endl;
   }
-	
 
   // print the output
   //cout << "x_ = " << ekf_.x_ << endl;
@@ -239,10 +198,8 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
  */
 void UKF::Prediction(double delta_t) {
   /**
-  TODO:
-
-  Complete this function! Estimate the object's location. Modify the state
-  vector, x_. Predict sigma points, the state, and the state covariance matrix.
+     Estimate the object's location. Modify the state vector, x_.
+     Predict sigma points, the state, and the state covariance matrix.
   */
   
   ////////////////////////////////////////////////////////////////////////
@@ -360,13 +317,10 @@ void UKF::Prediction(double delta_t) {
  */
 void UKF::UpdateLidar(MeasurementPackage measurement_pack) {
   /**
-  TODO:
-
-  Complete this function! Use lidar data to update the belief about the object's
+  Use lidar data to update the belief about the object's
   position. Modify the state vector, x_, and covariance, P_.
-
-  You'll also need to calculate the lidar NIS.
   */
+
     VectorXd z = VectorXd(2);
     z(0) = measurement_pack.raw_measurements_(0);
     z(1) = measurement_pack.raw_measurements_(1);
@@ -392,12 +346,8 @@ void UKF::UpdateLidar(MeasurementPackage measurement_pack) {
  */
 void UKF::UpdateRadar(MeasurementPackage meas_package) {
   /**
-  TODO:
-
   Complete this function! Use radar data to update the belief about the object's
   position. Modify the state vector, x_, and covariance, P_.
-
-  You'll also need to calculate the radar NIS.
   */
 
   ////////////////////////////////////////////////////////////////////
