@@ -221,8 +221,10 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
     ekf_.R_ = R_laser_;
     ekf_.Update(measurement_pack.raw_measurements_);
     */
-  } else
-	  cout << "ERROR: Invalid measurement type found" << endl;
+  } else {
+	cout << "ERROR: Invalid measurement type found" << endl;
+	cout << measurement_pack.sensor_type_ << endl;
+  }
 	
 
   // print the output
