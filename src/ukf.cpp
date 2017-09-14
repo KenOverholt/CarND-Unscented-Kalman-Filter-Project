@@ -353,6 +353,9 @@ void UKF::UpdateLidar(MeasurementPackage measurement_pack) {
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
   P_ = (I - K * H_Laser_) * P_;
+	
+  cout << "updated radar x_: " << x_ << endl;
+  cout << "updated radar P_: " << P_ << endl;
 }
 
 /**
