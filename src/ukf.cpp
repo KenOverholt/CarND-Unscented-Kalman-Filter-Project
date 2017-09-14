@@ -463,4 +463,7 @@ VectorXd z_diff = z_ - z_pred;
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S*K.transpose();
 
+  cout << "updated radar x_: " << x_ << endl;
+  cout << "updated radar P_: " << P_ << endl;
+	
 } // end void UKF::UpdateRadar(MeasurementPackage meas_package)
