@@ -184,7 +184,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   {
     if (use_radar_ == true)
     {
-      cout << "Using radar, " << measurement_pack.sensor_type_ << endl;
+      //cout << "Using radar, " << measurement_pack.sensor_type_ << endl;
       UpdateRadar(measurement_pack);
     }
   }
@@ -192,7 +192,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   {
     if (use_laser_ == true)
     {
-      cout << "Using lidar, " << measurement_pack.sensor_type_ << endl;
+      //cout << "Using lidar, " << measurement_pack.sensor_type_ << endl;
       UpdateLidar(measurement_pack);
     }
   }
@@ -354,8 +354,8 @@ void UKF::UpdateLidar(MeasurementPackage measurement_pack) {
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
   P_ = (I - K * H_Laser_) * P_;
 	
-  cout << "updated radar x_: " << x_ << endl;
-  cout << "updated radar P_: " << P_ << endl;
+  //cout << "updated radar x_: " << x_ << endl;
+  //cout << "updated radar P_: " << P_ << endl;
 }
 
 /**
@@ -471,7 +471,7 @@ VectorXd z_diff = z_ - z_pred;
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S*K.transpose();
 
-  cout << "updated radar x_: " << x_ << endl;
-  cout << "updated radar P_: " << P_ << endl;
+  //cout << "updated radar x_: " << x_ << endl;
+  //cout << "updated radar P_: " << P_ << endl;
 	
 } // end void UKF::UpdateRadar(MeasurementPackage meas_package)
