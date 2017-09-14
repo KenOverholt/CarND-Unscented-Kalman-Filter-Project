@@ -27,10 +27,12 @@ UKF::UKF() {
   
   // initial state vector
   x_ = VectorXd(n_x_);
-
+  x_.fill(0.0);
+	
   // initial covariance matrix
   P_ = MatrixXd(5, 5);  //KRO2 this works but should use n_x_, the state dimension
-
+  P_.fill(0.0);
+  
   // Process noise standard deviation longitudinal acceleration in m/s^2
   std_a_ = 0.2;	//KRO2: will need to modify this (original value: 30)
 
@@ -300,13 +302,13 @@ void UKF::Prediction(double delta_t) {
   }
 
   //predicted state mean
-  x_.fill(0.0);
+  //x_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
     x_ = x_ + weights_(i) * Xsig_pred_.col(i);
   }
 
   //predicted state covariance matrix
-  P_.fill(0.0);
+  //P_.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
 
     // state difference
