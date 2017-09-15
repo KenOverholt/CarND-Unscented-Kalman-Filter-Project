@@ -69,9 +69,6 @@ UKF::UKF() {
   //create matrix for cross correlation Tc_
   Tc_ = MatrixXd(n_x_, n_z_);
 
-  //create matrix for z, incoming radar measurement
-  z_ = VectorXd(n_z_);
-
   //define spreading parameter
   double lambda_ = 3 - n_aug_;
 
@@ -122,7 +119,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       * Create the covariance matrix.
     */
     // first measurement
-    x_ << 1, 1, .25, .25, .25;  //KRO important for RMSE; first two will be overwritten but I should play with the last 3
+    x_ << 1, 1, 0, 0, 0;  //KRO important for RMSE; first two will be overwritten but I should play with the last 3
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
@@ -132,10 +129,6 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
       //measurement_pack.raw_measurements_(1) is phi
       x_(0) = measurement_pack.raw_measurements_(0) * cos(measurement_pack.raw_measurements_(1)); 
       x_(1) = measurement_pack.raw_measurements_(0) * sin(measurement_pack.raw_measurements_(1));
-      //set z_ from incoming radar measurement
-      z_ << measurement_pack.raw_measurements_(0),
-            measurement_pack.raw_measurements_(1),
-            measurement_pack.raw_measurements_(2);
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
@@ -461,7 +454,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   MatrixXd K = Tc_ * S.inverse();
 
   //residual
-VectorXd z_diff = z_ - z_pred;
+VectorXd z_diff = meas_package.raw_measurements_ - z_pred;
 
   //angle normalization
   while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
